@@ -17,13 +17,6 @@ class GameDefinition {
 	List<Class> pooledObjects = []
 	Renderer renderer = new SimpleRenderer()
 
-	private void initialize() {
-		pooledObjects.addAll([GameObject, Render])
-		pooledObjects.unique().each {
-			ObjectPool.usePoolForClass(it)
-		}
-	}
-
 	static GameDefinition load(Script script) {
 
 		GameDefinitionScriptHelper helper = new GameDefinitionScriptHelper()
@@ -47,13 +40,22 @@ class GameDefinition {
 					args[0].resolveStrategy = Closure.DELEGATE_FIRST
 				}
 				args[0]()
+				if (name == 'gameDefinition') {
+					initialize()
+				}
 				mode.pop()
 			} else {
 				switch (mode.peek()) {
 					case 'meshes': meshes(name, args); break
-					case 'gameDefinition': gameDefinition(name, args); break
 					case 'prefabs': prefabs(name, args); break
 				}
+			}
+		}
+
+		def initialize() {
+			gameDefinition.pooledObjects.addAll([GameObject, Render])
+			gameDefinition.pooledObjects.unique().each {
+				ObjectPool.usePoolForClass(it)
 			}
 		}
 
@@ -62,6 +64,7 @@ class GameDefinition {
 		}
 
 		def gameDefinition(String name, args) {
+
 		}
 
 		def prefabs(String name, args) {
