@@ -2,6 +2,7 @@ package com.zeebo.gargoyle.gameobject
 
 import com.zeebo.gargoyle.behavior.Behavior
 import org.lwjgl.util.vector.Matrix4f
+import org.lwjgl.util.vector.Vector3f
 
 /**
  * User: Eric
@@ -10,6 +11,8 @@ final class GameObject {
 
 	final Matrix4f renderTransform = new Matrix4f()
 	private boolean dirty = true
+
+	String name
 
 	GameObject parent
 
@@ -42,6 +45,20 @@ final class GameObject {
 		return this
 	}
 
+	void setPosition(def position) {
+		transform.translate new Vector3f(*position)
+	}
+
+	void setRotation(def rotation) {
+		transform.rotate(rotation[0], new Vector3f(1, 0, 0))
+		transform.rotate(rotation[1], new Vector3f(0, 1, 0))
+		transform.rotate(rotation[2], new Vector3f(0, 0, 1))
+	}
+
+	void setScale(def scale) {
+		transform.scale(new Vector3f(*scale))
+	}
+
 	public <T extends Behavior> T getAt(Class<T> behavior) {
 		return behaviors[behavior]
 	}
@@ -70,5 +87,16 @@ final class GameObject {
 	void eachChildRecursive(Closure closure) {
 		closure(this)
 		children.each closure
+	}
+
+	String toHierarchy(int depth = 0) {
+		StringBuilder hierarchy = new StringBuilder()
+
+		hierarchy.append( '\t' * depth + name + '\n')
+		children.each {
+			hierarchy.append it.toHierarchy(depth + 1)
+		}
+
+		return hierarchy.toString()
 	}
 }

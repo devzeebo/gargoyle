@@ -1,0 +1,16 @@
+sceneGraph {
+	quad 'p', [1,1,1], {
+
+	}
+	quad 'pr', [1,1,1], [2,2,2], {
+
+	}
+	quad 'prs', [1,1,1], [2,2,2], [3,3,3], {
+
+	}
+
+	quad 'parent', {
+		quad 'child1'
+		quad 'child2'
+	}
+}

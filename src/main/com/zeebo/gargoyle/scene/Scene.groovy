@@ -1,6 +1,5 @@
 package com.zeebo.gargoyle.scene
 
-import com.zeebo.gargoyle.mesh.Mesh
 import com.zeebo.gargoyle.gameobject.GameObject
 
 /**
@@ -8,6 +7,5 @@ import com.zeebo.gargoyle.gameobject.GameObject
  */
 class Scene {
 
-	List<Mesh> meshes = []
-	List<GameObject> gameObjects = []
+	GameObject sceneGraph
 }
