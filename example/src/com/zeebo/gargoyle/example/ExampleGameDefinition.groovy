@@ -21,3 +21,7 @@ meshes {
 prefabs {
 	quad( [(Render) : { mesh = 'quad' } ] )
 }
+
+scenes {
+	'example/scene1.scene'
+}
