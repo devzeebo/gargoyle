@@ -23,8 +23,6 @@ class SceneManager {
 		if (!scenes[name]) {
 			scenes[name] = new Scene()
 
-			Stack<GameObject> scene = new Stack<>()
-
 			SceneLoader loader = new SceneLoader()
 
 			GroovyShell shell = new GroovyShell()
@@ -37,8 +35,6 @@ class SceneManager {
 			script.run()
 
 			scenes[name].sceneGraph = loader.objects.peek()
-
-			println scenes[name].sceneGraph.toHierarchy()
 		}
 	}
 
