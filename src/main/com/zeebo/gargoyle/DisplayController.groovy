@@ -1,6 +1,7 @@
 package com.zeebo.gargoyle
 
 import com.zeebo.gargoyle.gameobject.GameObject
+import com.zeebo.gargoyle.scene.Scene
 import org.lwjgl.opengl.ContextAttribs
 import org.lwjgl.opengl.Display
 import org.lwjgl.opengl.DisplayMode
@@ -16,7 +17,7 @@ class DisplayController {
 
 	GameDefinition gameDefinition
 
-	GameObject sceneGraph = new GameObject()
+	Scene currentScene
 
 	DisplayController() {
 
@@ -30,7 +31,7 @@ class DisplayController {
 	def loop() {
 
 		while (!Display.closeRequested) {
-			gameDefinition.renderer.render(sceneGraph)
+			gameDefinition.renderer.render(currentScene.sceneGraph)
 			Display.update()
 		}
 	}

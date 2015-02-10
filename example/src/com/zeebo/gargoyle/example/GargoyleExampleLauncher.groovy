@@ -4,6 +4,7 @@ import com.zeebo.gargoyle.DisplayController
 import com.zeebo.gargoyle.GameDefinition
 import com.zeebo.gargoyle.gameobject.GameObject
 import com.zeebo.gargoyle.prefab.PrefabManager
+import com.zeebo.gargoyle.scene.SceneManager
 
 /**
  * User: Eric
@@ -14,11 +15,9 @@ class GargoyleExampleLauncher {
 
 		DisplayController dc = new DisplayController()
 
-		dc.gameDefinition = GameDefinition.load(new ExampleGameDefinition())
+		dc.gameDefinition = GameDefinition.load(new File('example/src/com/zeebo/gargoyle/example/ExampleGameDefinition.groovy').newReader())
 
-		GameObject go = PrefabManager.quad.newGameObject()
-
-		dc.sceneGraph.children << go
+		dc.currentScene = SceneManager[dc.gameDefinition.startScene]
 
 		dc.loop()
 

@@ -4,14 +4,17 @@ import com.zeebo.gargoyle.behavior.Render
 import com.zeebo.gargoyle.mesh.ObjMeshLoader
 import com.zeebo.gargoyle.render.ShaderRenderer
 
-gameDefinition {
-	pooledObjects = []
+definition {
 
-	renderer = new ShaderRenderer(new File('vertex.glsl').newReader(), new File('fragment.glsl').newReader(), [
+	pooledObjects null
+
+	renderer new ShaderRenderer(new File('vertex.glsl').newReader(), new File('fragment.glsl').newReader(), [
 			0: 'in_Position',
 			1: 'in_Color',
 			2: 'in_Texture'
 	])
+
+	startScene 'scene1'
 }
 
 meshes {
@@ -23,5 +26,5 @@ prefabs {
 }
 
 scenes {
-	'example/scene1.scene'
+	scene1 'example/scenes/scene1.scene'
 }
