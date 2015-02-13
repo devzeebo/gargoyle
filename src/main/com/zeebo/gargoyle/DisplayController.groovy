@@ -1,11 +1,12 @@
 package com.zeebo.gargoyle
 
-import com.zeebo.gargoyle.gameobject.GameObject
+import com.zeebo.gargoyle.behavior.camera.Camera
 import com.zeebo.gargoyle.scene.Scene
 import org.lwjgl.opengl.ContextAttribs
 import org.lwjgl.opengl.Display
 import org.lwjgl.opengl.DisplayMode
 import org.lwjgl.opengl.PixelFormat
+import org.lwjgl.util.vector.Vector3f
 
 /**
  * User: Eric
@@ -29,6 +30,8 @@ class DisplayController {
 	}
 
 	def loop() {
+
+		println gameDefinition.renderer.class
 
 		while (!Display.closeRequested) {
 			gameDefinition.renderer.render(currentScene.sceneGraph)

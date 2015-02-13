@@ -17,7 +17,8 @@ class GargoyleExampleLauncher {
 
 		dc.gameDefinition = GameDefinition.load(new File('example/src/com/zeebo/gargoyle/example/ExampleGameDefinition.groovy').newReader())
 
-		dc.currentScene = SceneManager[dc.gameDefinition.startScene]
+		String scene = dc.gameDefinition.startScene
+		dc.currentScene = SceneManager.loadScene(scene, SceneManager.scenes[scene])
 
 		dc.loop()
 

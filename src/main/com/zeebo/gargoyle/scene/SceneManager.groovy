@@ -11,7 +11,7 @@ import com.zeebo.gargoyle.util.ScriptCategory
  */
 class SceneManager {
 
-	static Map<String, Scene> scenes = [:] as LinkedHashMap<String, Scene>
+	static Map<String, Reader> scenes = [:] as LinkedHashMap<String, Reader>
 
 	static {
 		SceneManager.metaClass.static.propertyMissing = { String key ->
@@ -19,23 +19,23 @@ class SceneManager {
 		}
 	}
 
-	static void loadScene(String name, Reader reader) {
-		if (!scenes[name]) {
-			scenes[name] = new Scene()
+	static Scene loadScene(String name, Reader reader) {
+		Scene scene = new Scene()
 
-			SceneLoader loader = new SceneLoader()
+		SceneLoader loader = new SceneLoader()
 
-			GroovyShell shell = new GroovyShell()
-			def script = shell.parse(reader)
+		GroovyShell shell = new GroovyShell()
+		def script = shell.parse(reader)
 
-			use(ScriptCategory) {
-				script.delegateTo loader
-			}
-
-			script.run()
-
-			scenes[name].sceneGraph = loader.objects.peek()
+		use(ScriptCategory) {
+			script.delegateTo loader
 		}
+
+		script.run()
+
+		scene.sceneGraph = loader.objects.peek()
+
+		return scene
 	}
 
 	static Scene getAt(def key) {
@@ -53,7 +53,9 @@ class SceneLoader {
 	Stack<GameObject> objects = new Stack<>()
 
 	def sceneGraph(Closure c) {
-		objects.push new GameObject(name: 'sceneGraph')
+		GameObject go = new GameObject()
+		go.name = 'sceneGraph'
+		objects.push go
 		c()
 	}
 
@@ -61,6 +63,7 @@ class SceneLoader {
 		GameObject go = name == 'gameObject' ? new GameObject() : PrefabManager[name].newGameObject()
 		go.name = args[0]
 		objects.peek().children << go
+		go.parent = objects.peek()
 
 		if (args.size() > 1) {
 			args = args[1..-1]

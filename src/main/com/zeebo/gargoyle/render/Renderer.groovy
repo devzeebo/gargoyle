@@ -1,5 +1,6 @@
 package com.zeebo.gargoyle.render
 
+import com.zeebo.gargoyle.behavior.camera.Camera
 import com.zeebo.gargoyle.gameobject.GameObject
 
 /**
@@ -8,4 +9,6 @@ import com.zeebo.gargoyle.gameobject.GameObject
 interface Renderer {
 
 	void render(GameObject sceneGraph)
+
+	void applyCamera(Camera camera)
 }

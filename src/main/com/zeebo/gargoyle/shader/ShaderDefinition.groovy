@@ -2,6 +2,7 @@ package com.zeebo.gargoyle.shader
 
 import com.zeebo.gargoyle.GL
 import org.lwjgl.LWJGLException
+import org.lwjgl.opengl.GL20
 import org.lwjgl.util.glu.GLU
 
 import static com.zeebo.gargoyle.GL.*
@@ -14,9 +15,12 @@ class ShaderDefinition {
 	final int programId
 	final int[] attributeArrays
 
-	ShaderDefinition(int id, int[] attrs) {
+	final Map<String, Integer> uniformLocations
+
+	ShaderDefinition(int id, int[] attrs, def uniforms) {
 		programId = id
 		attributeArrays = attrs
+		uniformLocations = uniforms
 	}
 
 	def withShader(Closure closure) {
@@ -38,10 +42,12 @@ class ShaderDefinition {
 
 		int programId
 		def attrs
+		def uniforms
 
 		Builder() {
 			programId = GL.glCreateProgram()
 			attrs = []
+			uniforms = []
 		}
 
 		Builder loadShader(Reader reader, int type) {
@@ -60,6 +66,11 @@ class ShaderDefinition {
 
 			attrs << attribId
 
+			int error
+			if ((error = GL.glGetError()) != GL.GL_NO_ERROR) {
+				throw new LWJGLException(GLU.gluErrorString(error))
+			}
+
 			return this
 		}
 
@@ -67,12 +78,13 @@ class ShaderDefinition {
 			GL.glLinkProgram programId
 			GL.glValidateProgram programId
 
-			def error
-			if ((error = GL.glGetError()) != GL.GL_NO_ERROR) {
-				throw new LWJGLException(GLU.gluErrorString(error))
-			}
+			def sd = new ShaderDefinition(programId, attrs as int[], uniforms.collectEntries { String it -> [it, GL20.glGetUniformLocation(programId, it)] })
 
-			return new ShaderDefinition(programId, attrs as int[])
+			return sd
+		}
+
+		void bindUniformLocation(String uniform) {
+			uniforms << uniform
 		}
 	}
 }

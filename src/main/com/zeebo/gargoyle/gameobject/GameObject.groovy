@@ -10,13 +10,13 @@ import org.lwjgl.util.vector.Vector3f
 final class GameObject {
 
 	final Matrix4f renderTransform = new Matrix4f()
+	final Matrix4f transform = new Matrix4f()
+
 	private boolean dirty = true
 
 	String name
 
 	GameObject parent
-
-	Matrix4f transform = new Matrix4f()
 
 	List<GameObject> children = []
 
@@ -80,8 +80,14 @@ final class GameObject {
 	}
 
 	private final def recalculateRenderTransform = {
-		Matrix4f.mul(parent.renderTransform, transform, renderTransform)
 		dirty = false
+		if (parent) {
+			Matrix4f.mul(parent.renderTransform, transform, renderTransform)
+		}
+		else {
+			renderTransform.load transform
+		}
+		return renderTransform
 	}
 
 	void eachChildRecursive(Closure closure) {

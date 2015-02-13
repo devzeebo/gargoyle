@@ -1,6 +1,7 @@
 package com.zeebo.gargoyle.render
 
 import com.zeebo.gargoyle.behavior.Render
+import com.zeebo.gargoyle.behavior.camera.Camera
 import com.zeebo.gargoyle.gameobject.GameObject
 
 import static com.zeebo.gargoyle.GL.*
@@ -17,6 +18,9 @@ class SimpleRenderer implements Renderer {
 
 		sceneGraph.eachChildRecursive renderObject
 	}
+
+	@Override
+	void applyCamera(Camera camera) {}
 
 	private final def renderObject = { GameObject go ->
 
