@@ -17,6 +17,7 @@ class Behavior {
 		gameObject = go
 
 		if (go) {
+			println "Do registration $go: ${this.class}"
 			doRegistration()
 		}
 		else {

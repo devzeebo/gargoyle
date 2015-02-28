@@ -2,13 +2,14 @@ package com.zeebo.gargoyle.example
 
 import com.zeebo.gargoyle.behavior.Render
 import com.zeebo.gargoyle.behavior.camera.Camera
+import com.zeebo.gargoyle.example.behavior.Rotater
 import com.zeebo.gargoyle.mesh.ObjMeshLoader
 import com.zeebo.gargoyle.render.ShaderRenderer
 import org.lwjgl.util.vector.Vector3f
 
 definition {
 
-	pooledObjects null
+	pooledObjects( [Rotater] )
 
 //	shaderRenderer {
 //		vertex new File('vertex.glsl').newReader()
@@ -39,6 +40,16 @@ prefabs {
 		projection.fieldOfView = 80
 		matrix.translate new Vector3f(0, 0, -10)
 	}])
+
+	quadRx([ (Render): { mesh = 'quad' },
+			(Rotater): { axis = new Vector3f(1,0,0)}
+	])
+	quadRy([ (Render): { mesh = 'quad' },
+			(Rotater): { axis = new Vector3f(0,1,0)}
+	])
+	quadRz([ (Render): { mesh = 'quad' },
+			(Rotater): { axis = new Vector3f(0,0,1)}
+	])
 }
 
 scenes {

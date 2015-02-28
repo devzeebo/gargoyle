@@ -1,7 +1,9 @@
 package com.zeebo.gargoyle
 
+import com.zeebo.gargoyle.behavior.BehaviorManager
 import com.zeebo.gargoyle.behavior.camera.Camera
 import com.zeebo.gargoyle.scene.Scene
+import org.lwjgl.Sys
 import org.lwjgl.opengl.ContextAttribs
 import org.lwjgl.opengl.Display
 import org.lwjgl.opengl.DisplayMode
@@ -31,11 +33,27 @@ class DisplayController {
 
 	def loop() {
 
-		println gameDefinition.renderer.class
+		int fps = 0
+
+		def getTime = { (Sys.time * 1000) / Sys.timerResolution }
+
+		long lastFPS = getTime()
+
+		def updateFps = {
+			if (getTime() - lastFPS > 1000) {
+				Display.title = "FPS: $fps"
+				fps = 0
+				lastFPS += 1000
+			}
+			fps++
+		}
 
 		while (!Display.closeRequested) {
+			updateFps()
+			BehaviorManager.runEvent 'update'
 			gameDefinition.renderer.render(currentScene.sceneGraph)
 			Display.update()
+			Display.sync(60)
 		}
 	}
 

@@ -23,11 +23,11 @@ class BehaviorManager {
 		}
 	}
 
-	static void runEvent(String event, args) {
+	static void runEvent(String event, args = null) {
 
 		String methodName = "on${event.capitalize()}"
 		map[event].each {
-			it."$methodName"(args)
+			it."$methodName"()
 		}
 	}
 
