@@ -1,8 +1,11 @@
 sceneGraph {
 	camera 'camera', [0, 0, 0]
-	for (int x = -25; x < 25; x++) {
-		for (int y = -25; y < 25; y++) {
-			quadRx "$x$y", [x, y, 0], {}
+	(-25..25).with {
+		it.each { x ->
+			it.each { y ->
+				quadRx "$x$y", [x, y, 0], {}
+
+			}
 		}
 	}
 
