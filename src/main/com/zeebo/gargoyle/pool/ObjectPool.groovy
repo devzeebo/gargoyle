@@ -36,7 +36,11 @@ class ObjectPool<T> {
 		classRef = clazz
 
 		objects = new T[capacity]
-		this.clean = clean
+		if (!(this.clean = clean)) {
+			if (clazz.metaClass.getMetaMethod('clean', [clazz] as Object[])) {
+				this.clean = clazz.&clean
+			}
+		}
 		expander = algo
 
 		for (int i = 0; i < capacity; i++) {
