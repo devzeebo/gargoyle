@@ -33,14 +33,21 @@ class BehaviorManager {
 		float deltaTime = (execTime - lastExecTime[event]) / 1000f
 
 		map[event].each {
-			if (Behavior.registrationDefs[it.class][event][1]) {
-				Behavior.registrationDefs[it.class][event][0].invoke(it, deltaTime)
-			} else {
-				Behavior.registrationDefs[it.class][event][0].invoke(it, null)
-			}
+			Behavior.registrationDefs[it.class][event][0].invoke(it, deltaTime)
 		}
 
 		lastExecTime[event] = execTime
+	}
+
+	static void update() {
+		long execTime = System.currentTimeMillis()
+		float deltaTime = (execTime - lastExecTime['update']) / 1000f
+
+		map['update'].each {
+			it.onUpdate(deltaTime)
+		}
+
+		lastExecTime['update'] = execTime
 	}
 
 	static void unregister(Behavior go, String action) {

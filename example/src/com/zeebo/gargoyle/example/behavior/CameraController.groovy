@@ -9,7 +9,7 @@ import org.lwjgl.util.vector.Vector3f
  */
 class CameraController extends Behavior {
 
-	void onUpdate() {
+	void onUpdate(float deltaTime) {
 		if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
 			gameObject.transform.translate(new Vector3f(0, 0, 0.01f))
 		}

@@ -49,11 +49,13 @@ class DisplayController {
 			fps++
 		}
 
+		def timings = new ArrayList(300)
+
 		Thread.start {
 			long lastTime = System.currentTimeMillis()
 			int frameCap = 60
 			while (!Display.closeRequested) {
-				println "Update Time: " + Timing.time {
+				timings << Timing.time {
 					BehaviorManager.runEvent 'update'
 				}
 				int millisToSleep = 1000 / 60 - (System.currentTimeMillis() - lastTime)
@@ -61,12 +63,16 @@ class DisplayController {
 					sleep(millisToSleep)
 				}
 				lastTime = System.currentTimeMillis()
+				if (timings.size() == 200) {
+					println "Average update: ${timings.sum() / 200}"
+					timings.clear()
+				}
 			}
 		}
 
 		while (!Display.closeRequested) {
 			updateFps()
-			println "Render time: " + Timing.time {
+			Timing.time {
 				gameDefinition.renderer.render(currentScene.sceneGraph)
 				Display.update()
 			}

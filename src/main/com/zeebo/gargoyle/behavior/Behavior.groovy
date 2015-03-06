@@ -51,4 +51,6 @@ class Behavior {
 
 		return methods.collectEntries { String name, value -> ["${name[2].toLowerCase()}${name.substring(3)}".toString(), value] }
 	}
+
+	void onUpdate(float deltaTime) {}
 }
