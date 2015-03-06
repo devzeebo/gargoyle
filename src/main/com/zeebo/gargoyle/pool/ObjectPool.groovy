@@ -10,6 +10,7 @@ class ObjectPool<T> {
 
 	static <NT> void usePoolForClass(Class<NT> clazz, ObjectPool<NT> op = new ObjectPool<NT>(clazz)) {
 
+		clazz.metaClass.static.getPool = { op }
 		clazz.metaClass.constructor = {
 			op.checkout()
 		}

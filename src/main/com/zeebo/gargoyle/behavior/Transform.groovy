@@ -86,8 +86,10 @@ class Transform extends Behavior {
 		mul(this, other)
 	}
 
-	Vector4f multiply(Vector4f other) {
-		Matrix4f.transform(internal, other, null)
+	Vector3f multiply(Vector3f other) {
+		Vector4f vec4 = new Vector4f(other.x, other.y, other.z, 1)
+		Matrix4f.transform(internal, vec4, vec4)
+		return new Vector3f(vec4.x, vec4.y, vec4.z)
 	}
 
 	static Transform mul(Transform left, Transform right, Transform dest = new Transform()) {
@@ -145,6 +147,12 @@ class Transform extends Behavior {
 		Matrix4f.negate(src.internal, dest.internal)
 		dest.dirty = true
 		return dest
+	}
+
+	Vector3f getPosition() {
+		Vector4f pos = new Vector4f(0, 0, 0, 1)
+		Matrix4f.transform(internal, pos, pos)
+		return new Vector3f(pos.x, pos.y, pos.z)
 	}
 
 	Matrix4f getRender() {

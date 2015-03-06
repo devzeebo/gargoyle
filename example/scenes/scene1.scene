@@ -1,9 +1,10 @@
 sceneGraph {
-	camera 'camera', [0, 0, -10]
-	(-25..25).with {
+	camera 'camera', [0, 0, -20]
+	frustum 'frustum', [0, 0, -1]
+	(-12..12).with {
 		it.each { x ->
 			it.each { y ->
-				quadRx "$x$y", [x, y, 0], {}
+				quad "$x$y", [x, y, 0], {}
 			}
 		}
 	}

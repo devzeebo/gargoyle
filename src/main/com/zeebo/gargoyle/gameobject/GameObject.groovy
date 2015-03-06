@@ -68,4 +68,8 @@ final class GameObject {
 
 		return hierarchy.toString()
 	}
+
+	static GameObject find(String name) {
+		GameObject.pool.find { it.name == name }
+	}
 }

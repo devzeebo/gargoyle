@@ -39,6 +39,12 @@ prefabs {
 		projection.nearPlane = 0.1f
 		projection.fieldOfView = 80
 	}])
+	frustum([(Camera): {
+		projection.aspectRatio = 16 / 9.0f
+		projection.farPlane = 1000.0f
+		projection.nearPlane = 0.1f
+		projection.fieldOfView = 80
+	}])
 
 	quadRx([ (Render): { mesh = 'quad' },
 			(Rotater): { axis = new Vector3f(1,0,0)}

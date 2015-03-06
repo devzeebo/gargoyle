@@ -3,6 +3,8 @@ package com.zeebo.gargoyle.render
 import com.zeebo.gargoyle.behavior.Render
 import com.zeebo.gargoyle.behavior.camera.Camera
 import com.zeebo.gargoyle.gameobject.GameObject
+import com.zeebo.gargoyle.pool.ObjectPool
+import com.zeebo.gargoyle.render.culling.FrustumCullingMask
 import com.zeebo.gargoyle.shader.ShaderDefinition
 import org.lwjgl.BufferUtils
 import org.lwjgl.LWJGLException
@@ -18,6 +20,8 @@ import static com.zeebo.gargoyle.GL.*
  * User: Eric
  */
 class ShaderRenderer implements Renderer {
+
+	FrustumCullingMask cullingMask = new FrustumCullingMask()
 
 	ShaderDefinition shader
 	FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer 16
@@ -54,6 +58,9 @@ class ShaderRenderer implements Renderer {
 		matrixBuffer.flip()
 		glUniformMatrix4 shader.uniformLocations.viewMatrix, false, matrixBuffer
 
+		cullingMask.camera = GameObject.find('frustum').behaviors[Camera]
+		cullingMask.prepare()
+
 		if ((error = glGetError()) != GL_NO_ERROR) {
 			throw new LWJGLException(GLU.gluErrorString(error))
 		}
@@ -70,11 +77,14 @@ class ShaderRenderer implements Renderer {
 
 			sceneGraph.eachChild renderObject
 		}
+
+		println "Amount Culled: $cullingMask.count"
 	}
 
 	private final def renderObject = { GameObject go ->
 
-		if (go[Render]) {
+//		if (go[Render]) {
+		if (go[Render] && !cullingMask.cull(go.transform.position)) {
 			glBindVertexArray go[Render].mesh.vao
 
 			go.transform.render.store matrixBuffer
