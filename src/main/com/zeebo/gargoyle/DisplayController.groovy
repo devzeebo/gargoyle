@@ -56,7 +56,7 @@ class DisplayController {
 			int frameCap = 60
 			while (!Display.closeRequested) {
 				timings << Timing.time {
-					BehaviorManager.runEvent 'update'
+					BehaviorManager.update()
 				}
 				int millisToSleep = 1000 / 60 - (System.currentTimeMillis() - lastTime)
 				if (millisToSleep > 0) {
