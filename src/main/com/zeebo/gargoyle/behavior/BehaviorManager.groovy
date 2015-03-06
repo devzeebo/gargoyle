@@ -1,4 +1,7 @@
 package com.zeebo.gargoyle.behavior
+
+import com.zeebo.gargoyle.util.Timing
+
 /**
  * User: Eric
  */
@@ -10,14 +13,14 @@ class BehaviorManager {
 	static void doWith(String key, Closure c) {
 		Iterator i = map[key].iterator()
 
-		while(i.hasNext()) {
+		while (i.hasNext()) {
 			def behavior = i.next()
 			if (behavior.deleteOnPass.contains(key)) {
 				i.remove()
 				behavior.deleteOnPass.remove(key)
 				continue
 			}
-			switch(c.parameterTypes.length) {
+			switch (c.parameterTypes.length) {
 				case 1: c(behavior); break
 				case 2: c(behavior, i); break
 			}
@@ -28,14 +31,15 @@ class BehaviorManager {
 
 		long execTime = System.currentTimeMillis()
 		float deltaTime = (execTime - lastExecTime[event]) / 1000f
+
 		map[event].each {
 			if (Behavior.registrationDefs[it.class][event][1]) {
 				Behavior.registrationDefs[it.class][event][0].invoke(it, deltaTime)
-			}
-			else {
+			} else {
 				Behavior.registrationDefs[it.class][event][0].invoke(it, null)
 			}
 		}
+
 		lastExecTime[event] = execTime
 	}
 
@@ -46,8 +50,7 @@ class BehaviorManager {
 	static void register(Behavior go, String action) {
 		if (go.respondsTo('deleteOnPass')) {
 			go.deleteOnPass.remove(action)
-		}
-		else {
+		} else {
 			go.metaClass.deleteOnPass = [] as HashSet
 		}
 

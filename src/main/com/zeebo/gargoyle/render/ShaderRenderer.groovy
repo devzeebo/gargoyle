@@ -77,8 +77,6 @@ class ShaderRenderer implements Renderer {
 
 			sceneGraph.eachChild renderObject
 		}
-
-		println "Amount Culled: $cullingMask.count"
 	}
 
 	private final def renderObject = { GameObject go ->

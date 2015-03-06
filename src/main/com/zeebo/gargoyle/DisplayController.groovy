@@ -3,6 +3,7 @@ package com.zeebo.gargoyle
 import com.zeebo.gargoyle.behavior.BehaviorManager
 import com.zeebo.gargoyle.behavior.camera.Camera
 import com.zeebo.gargoyle.scene.Scene
+import com.zeebo.gargoyle.util.Timing
 import org.lwjgl.Sys
 import org.lwjgl.opengl.ContextAttribs
 import org.lwjgl.opengl.Display
@@ -48,12 +49,28 @@ class DisplayController {
 			fps++
 		}
 
+		Thread.start {
+			long lastTime = System.currentTimeMillis()
+			int frameCap = 60
+			while (!Display.closeRequested) {
+				println "Update Time: " + Timing.time {
+					BehaviorManager.runEvent 'update'
+				}
+				int millisToSleep = 1000 / 60 - (System.currentTimeMillis() - lastTime)
+				if (millisToSleep > 0) {
+					sleep(millisToSleep)
+				}
+				lastTime = System.currentTimeMillis()
+			}
+		}
+
 		while (!Display.closeRequested) {
 			updateFps()
-			BehaviorManager.runEvent 'update'
-			gameDefinition.renderer.render(currentScene.sceneGraph)
-			Display.update()
-			Display.sync(60)
+			println "Render time: " + Timing.time {
+				gameDefinition.renderer.render(currentScene.sceneGraph)
+				Display.update()
+			}
+//			Display.sync(60)
 		}
 	}
 
