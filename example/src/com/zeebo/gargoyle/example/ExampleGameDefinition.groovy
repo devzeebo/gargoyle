@@ -2,6 +2,7 @@ package com.zeebo.gargoyle.example
 
 import com.zeebo.gargoyle.behavior.Render
 import com.zeebo.gargoyle.behavior.camera.Camera
+import com.zeebo.gargoyle.example.behavior.CameraController
 import com.zeebo.gargoyle.example.behavior.Rotater
 import com.zeebo.gargoyle.mesh.ObjMeshLoader
 import com.zeebo.gargoyle.render.ShaderRenderer
@@ -44,7 +45,8 @@ prefabs {
 		projection.farPlane = 1000.0f
 		projection.nearPlane = 0.1f
 		projection.fieldOfView = 80
-	}])
+	},(CameraController) : {}
+	])
 
 	quadRx([ (Render): { mesh = 'quad' },
 			(Rotater): { axis = new Vector3f(1,0,0)}
