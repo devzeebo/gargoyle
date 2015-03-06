@@ -5,6 +5,7 @@ package com.zeebo.gargoyle.behavior
 class BehaviorManager {
 
 	private static Map<String, LinkedHashSet<Behavior>> map = [:].withDefault { [] as LinkedHashSet }
+	private static Map<String, Long> lastExecTime = [:].withDefault { System.currentTimeMillis() }
 
 	static void doWith(String key, Closure c) {
 		Iterator i = map[key].iterator()
@@ -25,10 +26,17 @@ class BehaviorManager {
 
 	static void runEvent(String event, args = null) {
 
-		String methodName = "on${event.capitalize()}"
+		long execTime = System.currentTimeMillis()
+		float deltaTime = (execTime - lastExecTime[event]) / 1000f
 		map[event].each {
-			it."$methodName"()
+			if (Behavior.registrationDefs[it.class][event][1]) {
+				Behavior.registrationDefs[it.class][event][0].invoke(it, deltaTime)
+			}
+			else {
+				Behavior.registrationDefs[it.class][event][0].invoke(it, null)
+			}
 		}
+		lastExecTime[event] = execTime
 	}
 
 	static void unregister(Behavior go, String action) {

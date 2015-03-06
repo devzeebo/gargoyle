@@ -9,7 +9,7 @@ class Behavior {
 
 	GameObject gameObject
 
-	static def registrationDefs = [:].withDefault {
+	static Map<Class<? extends Behavior>, Map<String, List>> registrationDefs = [:].withDefault {
 		discoverResgistration(it)
 	}
 
@@ -26,13 +26,13 @@ class Behavior {
 	}
 
 	private final void doRegistration() {
-		registrationDefs[this.class].each { String action ->
+		registrationDefs[this.class].each { String action, value ->
 			BehaviorManager.register(this, action)
 		}
 	}
 
 	private final void doUnregistration() {
-		registrationDefs[this.class].each { String action ->
+		registrationDefs[this.class].each { String action, value ->
 			BehaviorManager.unregister(this, action)
 		}
 	}
@@ -40,17 +40,15 @@ class Behavior {
 	private static final def discoverResgistration(Class klass) {
 
 		Class clazz = klass
-		def methods = [] as HashSet
+		def methods = [:]
 
 		while (clazz != Behavior) {
-			clazz.declaredMethods.findAll { it.name.startsWith('on') }.each {
-				methods << it.name
+			clazz.declaredMethods.findAll { !methods.containsKey(it.name) && it.name.startsWith('on') }.each {
+				methods[it.name] = [it, it.parameterCount > 0 && it.parameterTypes[0] == float]
 			}
 			clazz = clazz.superclass
 		}
 
-		return methods.collect { String name -> "${name[2].toLowerCase()}${name.substring(3)}" } as List
+		return methods.collectEntries { String name, value -> ["${name[2].toLowerCase()}${name.substring(3)}".toString(), value] }
 	}
-
-	void onUpdate() {}
 }

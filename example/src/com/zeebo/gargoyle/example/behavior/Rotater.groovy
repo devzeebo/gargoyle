@@ -11,7 +11,7 @@ class Rotater extends Behavior {
 
 	Vector3f axis
 
-	void onUpdate() {
-		gameObject.transform.rotate(0.01f, axis)
+	void onUpdate(float deltaTime) {
+		gameObject.transform.rotate(5f * deltaTime as float, axis)
 	}
 }

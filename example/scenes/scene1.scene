@@ -4,7 +4,7 @@ sceneGraph {
 	(-12..12).with {
 		it.each { x ->
 			it.each { y ->
-				quad "$x$y", [x, y, 0], {}
+				quadRx "$x$y", [x, y, 0], {}
 			}
 		}
 	}
