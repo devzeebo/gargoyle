@@ -1,6 +1,7 @@
 package com.zeebo.gargoyle.example.behavior
 
 import com.zeebo.gargoyle.behavior.Behavior
+import com.zeebo.gargoyle.behavior.BehaviorManager
 import org.lwjgl.util.vector.Vector3f
 
 /**
@@ -12,6 +13,5 @@ class Rotater extends Behavior {
 
 	void onUpdate() {
 		gameObject.transform.rotate(0.01f, axis)
-		gameObject.dirty = true
 	}
 }

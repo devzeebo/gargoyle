@@ -50,7 +50,7 @@ class ShaderRenderer implements Renderer {
 		camera.projection.matrix.store matrixBuffer
 		matrixBuffer.flip()
 		glUniformMatrix4 shader.uniformLocations.projectionMatrix, false, matrixBuffer
-		camera.matrix.store matrixBuffer
+		camera.gameObject.transform.store matrixBuffer
 		matrixBuffer.flip()
 		glUniformMatrix4 shader.uniformLocations.viewMatrix, false, matrixBuffer
 
@@ -68,7 +68,7 @@ class ShaderRenderer implements Renderer {
 
 			applyCamera Camera.mainCamera
 
-			sceneGraph.eachChildRecursive renderObject
+			sceneGraph.eachChild renderObject
 		}
 	}
 
@@ -77,7 +77,7 @@ class ShaderRenderer implements Renderer {
 		if (go[Render]) {
 			glBindVertexArray go[Render].mesh.vao
 
-			go.renderTransform.store matrixBuffer
+			go.transform.render.store matrixBuffer
 			matrixBuffer.flip()
 			glUniformMatrix4 shader.uniformLocations.modelMatrix, false, matrixBuffer
 

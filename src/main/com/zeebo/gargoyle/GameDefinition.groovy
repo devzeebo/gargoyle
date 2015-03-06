@@ -1,6 +1,7 @@
 package com.zeebo.gargoyle
 
 import com.zeebo.gargoyle.behavior.Render
+import com.zeebo.gargoyle.behavior.Transform
 import com.zeebo.gargoyle.behavior.camera.Camera
 import com.zeebo.gargoyle.example.ExampleGameDefinition
 import com.zeebo.gargoyle.gameobject.GameObject
@@ -85,7 +86,7 @@ class GameDefinitionLoader {
 
 		def pooledObjects(def pooledObjects) {
 			pooledObjects = pooledObjects ?: []
-			pooledObjects.addAll([GameObject, Render])
+			pooledObjects.addAll([GameObject, Render, Transform])
 			pooledObjects.unique().each {
 				ObjectPool.usePoolForClass(it)
 			}

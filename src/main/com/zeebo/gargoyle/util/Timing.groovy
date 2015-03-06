@@ -5,11 +5,15 @@ package com.zeebo.gargoyle.util
  */
 class Timing {
 
-	static void time(Closure c) {
+	static double time(Closure c) {
 		time(1, c)
 	}
 
-	static void time(int times, Closure c) {
+	static double time(int times, Closure c) {
+		totalTime(times, c) / times / 1000
+	}
+
+	static double totalTime(int times, Closure c) {
 		long start, end
 		double total = 0
 
@@ -20,8 +24,6 @@ class Timing {
 			total += end - start
 		}
 
-
-
-		println total / times / 1000
+		return total
 	}
 }

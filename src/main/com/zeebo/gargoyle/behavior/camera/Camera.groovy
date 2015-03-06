@@ -11,7 +11,6 @@ class Camera extends Behavior {
 	static Camera mainCamera
 
 	ProjectionMatrix projection = new ProjectionMatrix()
-	Matrix4f matrix = new Matrix4f()
 
 	void setMain(boolean value) {
 		if (value) {

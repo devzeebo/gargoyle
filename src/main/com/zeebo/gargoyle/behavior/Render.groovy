@@ -9,8 +9,6 @@ import com.zeebo.gargoyle.pool.ObjectPool
  */
 class Render extends Behavior {
 
-	final static ObjectPool<Render> objectPool = new ObjectPool<>(Render, 10, { it.mesh = null })
-
 	Mesh mesh
 
 	void setMesh(Mesh mesh) {

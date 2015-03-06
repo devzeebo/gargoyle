@@ -5,6 +5,8 @@ import com.zeebo.gargoyle.gameobject.GameObject
 import com.zeebo.gargoyle.prefab.Prefab
 import com.zeebo.gargoyle.prefab.PrefabManager
 import com.zeebo.gargoyle.util.ScriptCategory
+import org.lwjgl.util.vector.Matrix4f
+import org.lwjgl.util.vector.Vector3f
 
 /**
  * User: Eric
@@ -60,14 +62,13 @@ class SceneLoader {
 	}
 
 	def methodMissing(String name, args) {
+		args = args as List
 		GameObject go = name == 'gameObject' ? new GameObject() : PrefabManager[name].newGameObject()
-		go.name = args[0]
-		objects.peek().children << go
-		go.parent = objects.peek()
+		go.name = args.remove(0)
+		objects.peek().transform.children << go.transform
+		go.transform.parent = objects.peek().transform
 
-		if (args.size() > 1) {
-			args = args[1..-1]
-
+		if (!args.empty) {
 			if (args[-1] instanceof Closure) {
 				objects.push go
 				args[-1]()
@@ -76,10 +77,22 @@ class SceneLoader {
 				args = args[0..<-1]
 			}
 
-			if (args) {
-				['position', 'rotation', 'scale'][0..<args.size()].reverse().eachWithIndex { it, idx ->
-					go."$it" = args[-(idx + 1)]
+			if (!args.empty) {
+				Matrix4f mat = new Matrix4f()
+				mat.setIdentity()
+				if (!args.empty) {
+					mat.translate(new Vector3f(*args.remove(0)))
 				}
+				if (!args.empty) {
+					Vector3f rotate = new Vector3f(*args.remove(0))
+					mat.rotate(rotate.x, new Vector3f(1, 0, 0))
+					mat.rotate(rotate.y, new Vector3f(0, 1, 0))
+					mat.rotate(rotate.z, new Vector3f(0, 0, 1))
+				}
+				if (!args.empty) {
+					mat.scale(new Vector3f(*args.remove(0)))
+				}
+				go.transform << mat
 			}
 		}
 	}

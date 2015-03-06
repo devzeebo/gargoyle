@@ -38,7 +38,6 @@ prefabs {
 		projection.farPlane = 1000.0f
 		projection.nearPlane = 0.1f
 		projection.fieldOfView = 80
-		matrix.translate new Vector3f(0, 0, -10)
 	}])
 
 	quadRx([ (Render): { mesh = 'quad' },
