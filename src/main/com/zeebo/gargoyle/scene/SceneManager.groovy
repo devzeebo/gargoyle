@@ -22,6 +22,7 @@ class SceneManager {
 	}
 
 	static Scene loadScene(String name, Reader reader) {
+		scenes[name] = reader
 		Scene scene = new Scene()
 
 		SceneLoader loader = new SceneLoader()
