@@ -1,7 +1,6 @@
 package com.zeebo.gargoyle
 
 import com.zeebo.gargoyle.behavior.BehaviorManager
-import com.zeebo.gargoyle.behavior.camera.Camera
 import com.zeebo.gargoyle.scene.Scene
 import com.zeebo.gargoyle.util.Timing
 import org.lwjgl.Sys
@@ -9,7 +8,6 @@ import org.lwjgl.opengl.ContextAttribs
 import org.lwjgl.opengl.Display
 import org.lwjgl.opengl.DisplayMode
 import org.lwjgl.opengl.PixelFormat
-import org.lwjgl.util.vector.Vector3f
 
 /**
  * User: Eric
@@ -57,7 +55,7 @@ class DisplayController {
 		Thread.start {
 			long lastTime = System.currentTimeMillis()
 			int frameCap = 60
-			while (!Display.closeRequested) {
+			while (Display.created && !Display.closeRequested) {
 				timings << Timing.time {
 					BehaviorManager.update()
 				}
@@ -76,7 +74,7 @@ class DisplayController {
 		while (!Display.closeRequested) {
 			updateFps()
 			Timing.time {
-				gameDefinition.renderer.render(currentScene.sceneGraph)
+				gameDefinition.renderer.render currentScene.sceneGraph
 				Display.update()
 			}
 //			Display.sync(60)
@@ -103,7 +101,7 @@ class DisplayController {
 
 		settings.width = settings.width as int
 		settings.height = settings.height as int
-		settings.fullscreen = settings?.fullscreen as boolean
+		settings.fullscreen = Boolean.parseBoolean settings.fullscreen
 		settings.refreshRate = settings.refreshRate as int
 	}
 

@@ -58,7 +58,7 @@ class ShaderRenderer implements Renderer {
 		matrixBuffer.flip()
 		glUniformMatrix4 shader.uniformLocations.viewMatrix, false, matrixBuffer
 
-		cullingMask.camera = GameObject.find('frustum').behaviors[Camera]
+		cullingMask.camera = Camera.mainCamera
 		cullingMask.prepare()
 
 		if ((error = glGetError()) != GL_NO_ERROR) {

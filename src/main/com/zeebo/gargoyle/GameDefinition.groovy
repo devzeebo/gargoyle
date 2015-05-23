@@ -3,7 +3,6 @@ package com.zeebo.gargoyle
 import com.zeebo.gargoyle.behavior.Render
 import com.zeebo.gargoyle.behavior.Transform
 import com.zeebo.gargoyle.behavior.camera.Camera
-import com.zeebo.gargoyle.example.ExampleGameDefinition
 import com.zeebo.gargoyle.gameobject.GameObject
 import com.zeebo.gargoyle.mesh.MeshManager
 import com.zeebo.gargoyle.pool.ObjectPool
@@ -29,9 +28,8 @@ class GameDefinition {
 
 		GameDefinitionLoader loader = new GameDefinitionLoader()
 
-		Script script = new ExampleGameDefinition()
-//		GroovyShell shell = new GroovyShell()
-//		def script = shell.parse(scriptSource)
+		GroovyShell shell = new GroovyShell()
+		def script = shell.parse(scriptSource)
 
 		use(ScriptCategory) {
 			script.delegateTo loader
@@ -153,6 +151,6 @@ class GameDefinitionLoader {
 		if (res instanceof Reader) {
 			return res
 		}
-		return new BufferedReader(new InputStreamReader(GameDefinitionLoader.class.getResourceAsStream(res)))
+		return new BufferedReader(new InputStreamReader(GameDefinitionLoader.getResourceAsStream(res)))
 	}
 }
