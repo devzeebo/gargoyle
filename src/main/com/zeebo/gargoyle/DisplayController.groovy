@@ -28,7 +28,10 @@ class DisplayController {
 		loadSettings()
 
 		ContextAttribs contextAttribs = new ContextAttribs(3, 2).withForwardCompatible(true).withProfileCore(true)
-		Display.displayMode = new DisplayMode(settings.width, settings.height)
+		Display.displayMode = new DisplayMode(settings.width, settings.height, 32, settings.refreshRate, true)
+		if (settings.fullscreen) {
+			Display.fullscreen = settings.fullscreen
+		}
 		Display.create(new PixelFormat(), contextAttribs)
 	}
 
@@ -100,6 +103,8 @@ class DisplayController {
 
 		settings.width = settings.width as int
 		settings.height = settings.height as int
+		settings.fullscreen = settings?.fullscreen as boolean
+		settings.refreshRate = settings.refreshRate as int
 	}
 
 	def saveSettings() {

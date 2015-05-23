@@ -149,6 +149,7 @@ class GameDefinitionLoader {
 	}
 
 	def getResourceAsReader(def res) {
+		println res
 		if (res instanceof Reader) {
 			return res
 		}
