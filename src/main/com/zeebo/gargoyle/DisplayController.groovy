@@ -25,7 +25,13 @@ class DisplayController {
 
 		loadSettings()
 
+		initialize()
+	}
+
+	def initialize() {
+
 		ContextAttribs contextAttribs = new ContextAttribs(3, 2).withForwardCompatible(true).withProfileCore(true)
+
 		Display.displayMode = new DisplayMode(settings.width, settings.height, 32, settings.refreshRate, true)
 		if (settings.fullscreen) {
 			Display.fullscreen = settings.fullscreen
@@ -75,10 +81,14 @@ class DisplayController {
 			updateFps()
 			Timing.time {
 				gameDefinition.renderer.render currentScene.sceneGraph
-				Display.update()
+				redraw()
 			}
 //			Display.sync(60)
 		}
+	}
+
+	def redraw() {
+		Display.update()
 	}
 
 	def destroy() {
@@ -86,6 +96,14 @@ class DisplayController {
 		saveSettings()
 
 		Display.destroy()
+	}
+
+	int getWidth() {
+		return settings.width
+	}
+
+	int getHeight() {
+		return settings.height
 	}
 
 	def loadSettings() {
