@@ -39,7 +39,7 @@ class DisplayController {
 		Display.create(new PixelFormat(), contextAttribs)
 	}
 
-	def loop() {
+	def loop(Closure callback = null) {
 
 		int fps = 0
 
@@ -61,7 +61,8 @@ class DisplayController {
 		Thread.start {
 			long lastTime = System.currentTimeMillis()
 			int frameCap = 60
-			while (Display.created && !Display.closeRequested) {
+			while (true) {
+				if (Display.created && Display.closeRequested) { break }
 				timings << Timing.time {
 					BehaviorManager.update()
 				}
@@ -77,12 +78,14 @@ class DisplayController {
 			}
 		}
 
-		while (!Display.closeRequested) {
+		while (true) {
+			if (Display.created && Display.closeRequested) { break }
 			updateFps()
 			Timing.time {
 				gameDefinition.renderer.render currentScene.sceneGraph
 				redraw()
 			}
+			callback?.call()
 //			Display.sync(60)
 		}
 	}

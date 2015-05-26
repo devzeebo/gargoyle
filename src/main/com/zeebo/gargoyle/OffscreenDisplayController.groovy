@@ -5,9 +5,6 @@ import org.lwjgl.opengl.GL11
 import org.lwjgl.opengl.Pbuffer
 import org.lwjgl.opengl.PixelFormat
 
-import javax.swing.JFrame
-import javax.swing.JPanel
-import java.awt.Graphics
 import java.awt.image.BufferedImage
 import java.nio.IntBuffer
 
