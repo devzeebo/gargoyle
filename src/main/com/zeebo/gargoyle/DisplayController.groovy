@@ -84,8 +84,8 @@ class DisplayController {
 			Timing.time {
 				gameDefinition.renderer.render currentScene.sceneGraph
 				redraw()
+				callback?.call()
 			}
-			callback?.call()
 //			Display.sync(60)
 		}
 	}
